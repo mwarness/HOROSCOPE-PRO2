@@ -100,31 +100,31 @@
 
  */
 
-var WhatAmIDoing = {};
+var wtfftw = {};
 var modules = {};
 var primary = [];
-var secondary = window.WhatAmIDoing || [];
+var secondary = window.wtfftw || [];
 var $ = window.jQuery;
 var $win = $(window);
 var $doc = $(document);
 var isFunction = $.isFunction;
 
-var _ = WhatAmIDoing._ = __webpack_require__(5);
+var _ = wtfftw._ = __webpack_require__(5);
 
-var tram = WhatAmIDoing.tram = __webpack_require__(1) && $.tram;
+var tram = wtfftw.tram = __webpack_require__(1) && $.tram;
 var domready = false;
 var destroyed = false;
 tram.config.hideBackface = false;
 tram.config.keepInherited = true;
 /**
- * WhatAmIDoing.define - Define a named module
+ * wtfftw.define - Define a named module
  * @param  {string} name
  * @param  {function} factory
  * @param  {object} options
  * @return {object}
  */
 
-WhatAmIDoing.define = function (name, factory, options) {
+wtfftw.define = function (name, factory, options) {
   if (modules[name]) {
     unbindModule(modules[name]);
   }
@@ -134,19 +134,19 @@ WhatAmIDoing.define = function (name, factory, options) {
   return instance;
 };
 /**
- * WhatAmIDoing.require - Require a named module
+ * wtfftw.require - Require a named module
  * @param  {string} name
  * @return {object}
  */
 
 
-WhatAmIDoing.require = function (name) {
+wtfftw.require = function (name) {
   return modules[name];
 };
 
 function bindModule(module) {
-  // If running in WhatAmIDoing app, subscribe to design/preview events
-  if (WhatAmIDoing.env()) {
+  // If running in wtfftw app, subscribe to design/preview events
+  if (wtfftw.env()) {
     isFunction(module.design) && $win.on('__wf_design', module.design);
     isFunction(module.preview) && $win.on('__wf_preview', module.preview);
   } // Subscribe to front-end destroy event
@@ -191,12 +191,12 @@ function removeReady(module) {
   });
 }
 /**
- * WhatAmIDoing.push - Add a ready handler into secondary queue
+ * wtfftw.push - Add a ready handler into secondary queue
  * @param {function} ready  Callback to invoke on domready
  */
 
 
-WhatAmIDoing.push = function (ready) {
+wtfftw.push = function (ready) {
   // If domready has already happened, invoke handler
   if (domready) {
     isFunction(ready) && ready();
@@ -207,13 +207,13 @@ WhatAmIDoing.push = function (ready) {
   secondary.push(ready);
 };
 /**
- * WhatAmIDoing.env - Get the state of the WhatAmIDoing app
+ * wtfftw.env - Get the state of the wtfftw app
  * @param {string} mode [optional]
  * @return {boolean}
  */
 
 
-WhatAmIDoing.env = function (mode) {
+wtfftw.env = function (mode) {
   var designFlag = window.__wf_design;
   var inApp = typeof designFlag !== 'undefined';
 
@@ -234,7 +234,7 @@ WhatAmIDoing.env = function (mode) {
   }
 
   if (mode === 'editor') {
-    return window.WhatAmIDoingEditor;
+    return window.wtfftwEditor;
   }
 
   if (mode === 'test') {
@@ -248,10 +248,10 @@ WhatAmIDoing.env = function (mode) {
 
 
 var userAgent = navigator.userAgent.toLowerCase();
-var touch = WhatAmIDoing.env.touch = 'ontouchstart' in window || window.DocumentTouch && document instanceof window.DocumentTouch;
-var chrome = WhatAmIDoing.env.chrome = /chrome/.test(userAgent) && /Google/.test(navigator.vendor) && parseInt(userAgent.match(/chrome\/(\d+)\./)[1], 10);
-var ios = WhatAmIDoing.env.ios = /(ipod|iphone|ipad)/.test(userAgent);
-WhatAmIDoing.env.safari = /safari/.test(userAgent) && !chrome && !ios; // Maintain current touch target to prevent late clicks on touch devices
+var touch = wtfftw.env.touch = 'ontouchstart' in window || window.DocumentTouch && document instanceof window.DocumentTouch;
+var chrome = wtfftw.env.chrome = /chrome/.test(userAgent) && /Google/.test(navigator.vendor) && parseInt(userAgent.match(/chrome\/(\d+)\./)[1], 10);
+var ios = wtfftw.env.ios = /(ipod|iphone|ipad)/.test(userAgent);
+wtfftw.env.safari = /safari/.test(userAgent) && !chrome && !ios; // Maintain current touch target to prevent late clicks on touch devices
 
 var touchTarget; // Listen for both events to support touch/mouse hybrid devices
 
@@ -259,25 +259,25 @@ touch && $doc.on('touchstart mousedown', function (evt) {
   touchTarget = evt.target;
 });
 /**
- * WhatAmIDoing.validClick - validate click target against current touch target
+ * wtfftw.validClick - validate click target against current touch target
  * @param  {HTMLElement} clickTarget  Element being clicked
  * @return {Boolean}  True if click target is valid (always true on non-touch)
  */
 
-WhatAmIDoing.validClick = touch ? function (clickTarget) {
+wtfftw.validClick = touch ? function (clickTarget) {
   return clickTarget === touchTarget || $.contains(clickTarget, touchTarget);
 } : function () {
   return true;
 };
 /**
- * WhatAmIDoing.resize, WhatAmIDoing.scroll - throttled event proxies
+ * wtfftw.resize, wtfftw.scroll - throttled event proxies
  */
 
-var resizeEvents = 'resize.whatamidoing orientationchange.whatamidoing load.whatamidoing';
-var scrollEvents = 'scroll.whatamidoing ' + resizeEvents;
-WhatAmIDoing.resize = eventProxy($win, resizeEvents);
-WhatAmIDoing.scroll = eventProxy($win, scrollEvents);
-WhatAmIDoing.redraw = eventProxy(); // Create a proxy instance for throttled events
+var resizeEvents = 'resize.wtfftw orientationchange.wtfftw load.wtfftw';
+var scrollEvents = 'scroll.wtfftw ' + resizeEvents;
+wtfftw.resize = eventProxy($win, resizeEvents);
+wtfftw.scroll = eventProxy($win, scrollEvents);
+wtfftw.redraw = eventProxy(); // Create a proxy instance for throttled events
 
 function eventProxy(target, types) {
   // Set up throttled method (using custom frame-based _.throttle)
@@ -329,20 +329,20 @@ function eventProxy(target, types) {
   };
 
   return proxy;
-} // WhatAmIDoing.location - Wrap window.location in api
+} // wtfftw.location - Wrap window.location in api
 
 
-WhatAmIDoing.location = function (url) {
+wtfftw.location = function (url) {
   window.location = url;
 };
 
-if (WhatAmIDoing.env()) {
-  // Ignore redirects inside a WhatAmIDoing design/edit environment
-  WhatAmIDoing.location = function () {};
-} // WhatAmIDoing.ready - Call primary and secondary handlers
+if (wtfftw.env()) {
+  // Ignore redirects inside a wtfftw design/edit environment
+  wtfftw.location = function () {};
+} // wtfftw.ready - Call primary and secondary handlers
 
 
-WhatAmIDoing.ready = function () {
+wtfftw.ready = function () {
   domready = true; // Restore modules after destroy
 
   if (destroyed) {
@@ -355,7 +355,7 @@ WhatAmIDoing.ready = function () {
   _.each(secondary, callReady); // Trigger resize
 
 
-  WhatAmIDoing.resize.up();
+  wtfftw.resize.up();
 };
 
 function callReady(readyFn) {
@@ -368,14 +368,14 @@ function restoreModules() {
   _.each(modules, bindModule);
 }
 /**
- * WhatAmIDoing.load - Add a window load handler that will run even if load event has already happened
+ * wtfftw.load - Add a window load handler that will run even if load event has already happened
  * @param  {function} handler
  */
 
 
 var deferLoad;
 
-WhatAmIDoing.load = function (handler) {
+wtfftw.load = function (handler) {
   deferLoad.then(handler);
 };
 
@@ -389,10 +389,10 @@ function bindLoad() {
 
   deferLoad = new $.Deferred();
   $win.on('load', deferLoad.resolve);
-} // WhatAmIDoing.destroy - Trigger a destroy event for all modules
+} // wtfftw.destroy - Trigger a destroy event for all modules
 
 
-WhatAmIDoing.destroy = function (options) {
+wtfftw.destroy = function (options) {
   options = options || {};
   destroyed = true;
   $win.triggerHandler('__wf_destroy'); // Allow domready reset for tests
@@ -405,9 +405,9 @@ WhatAmIDoing.destroy = function (options) {
   _.each(modules, unbindModule); // Clear any proxy event handlers
 
 
-  WhatAmIDoing.resize.off();
-  WhatAmIDoing.scroll.off();
-  WhatAmIDoing.redraw.off(); // Clear any queued ready methods
+  wtfftw.resize.off();
+  wtfftw.scroll.off();
+  wtfftw.redraw.off(); // Clear any queued ready methods
 
   primary = [];
   secondary = []; // If load event has not yet fired, replace the deferred
@@ -418,11 +418,11 @@ WhatAmIDoing.destroy = function (options) {
 }; // Listen for domready
 
 
-$(WhatAmIDoing.ready); // Listen for window.onload and resolve deferred
+$(wtfftw.ready); // Listen for window.onload and resolve deferred
 
 bindLoad(); // Export commonjs module
 
-module.exports = window.WhatAmIDoing = WhatAmIDoing;
+module.exports = window.wtfftw = wtfftw;
 
 /***/ }),
 /* 1 */
@@ -1348,17 +1348,17 @@ module.exports = __webpack_require__(15);
 /* eslint-disable no-var */
 
 /**
- * WhatAmIDoing: Brand pages on the subdomain
+ * wtfftw: Brand pages on the subdomain
  */
 
-var WhatAmIDoing = __webpack_require__(0);
+var wtfftw = __webpack_require__(0);
 
-WhatAmIDoing.define('brand', module.exports = function ($) {
+wtfftw.define('brand', module.exports = function ($) {
   var api = {};
   var doc = document;
   var $html = $('html');
   var $body = $('body');
-  var namespace = '.w-whatamidoing-badge';
+  var namespace = '.w-wtfftw-badge';
   var location = window.location;
   var isPhantom = /PhantomJS/i.test(navigator.userAgent);
   var fullScreenEvents = 'fullscreenchange webkitfullscreenchange mozfullscreenchange msfullscreenchange';
@@ -1369,7 +1369,7 @@ WhatAmIDoing.define('brand', module.exports = function ($) {
     var shouldBrand = $html.attr('data-wf-status');
     var publishedDomain = $html.attr('data-wf-domain') || '';
 
-    if (/\.whatamidoing\.io$/i.test(publishedDomain) && location.hostname !== publishedDomain) {
+    if (/\.wtfftw\.io$/i.test(publishedDomain) && location.hostname !== publishedDomain) {
       shouldBrand = true;
     }
 
@@ -1387,12 +1387,12 @@ WhatAmIDoing.define('brand', module.exports = function ($) {
   }
 
   function createBadge() {
-    var $brand = $('<a class="w-whatamidoing-badge"></a>').attr('href', 'https://whatamidoing.com?utm_campaign=brandjs');
-    var $logoArt = $('<img>').attr('src', 'https://d3e54v103j8qbb.cloudfront.net/img/whatamidoing-badge-icon.f67cd735e3.svg').attr('alt', '').css({
+    var $brand = $('<a class="w-wtfftw-badge"></a>').attr('href', 'https://wtfftw.com?utm_campaign=brandjs');
+    var $logoArt = $('<img>').attr('src', 'https://d3e54v103j8qbb.cloudfront.net/img/wtfftw-badge-icon.f67cd735e3.svg').attr('alt', '').css({
       marginRight: '8px',
       width: '16px'
     });
-    var $logoText = $('<img>').attr('src', 'https://d1otoma47x30pg.cloudfront.net/img/whatamidoing-badge-text.6faa6a38cd.svg').attr('alt', 'Made in WhatAmIDoing');
+    var $logoText = $('<img>').attr('src', 'https://d1otoma47x30pg.cloudfront.net/img/wtfftw-badge-text.6faa6a38cd.svg').attr('alt', 'Made in wtfftw');
     $brand.append($logoArt, $logoText);
     return $brand[0];
   }
@@ -1400,7 +1400,7 @@ WhatAmIDoing.define('brand', module.exports = function ($) {
   function ensureBrand() {
     var found = $body.children(namespace);
     var match = found.length && found.get(0) === brandElement;
-    var inEditor = WhatAmIDoing.env('editor');
+    var inEditor = wtfftw.env('editor');
 
     if (match) {
       // Remove brand when Editor is active
@@ -1442,7 +1442,7 @@ WhatAmIDoing.define('brand', module.exports = function ($) {
 var $ = window.$;
 var tram = __webpack_require__(1) && $.tram;
 /*!
- * WhatAmIDoing._ (aka) Underscore.js 1.6.0 (custom build)
+ * wtfftw._ (aka) Underscore.js 1.6.0 (custom build)
  * _.each
  * _.map
  * _.find
@@ -1451,7 +1451,7 @@ var tram = __webpack_require__(1) && $.tram;
  * _.contains
  * _.delay
  * _.defer
- * _.throttle (whatamidoing)
+ * _.throttle (wtfftw)
  * _.debounce
  * _.keys
  * _.has
@@ -1466,7 +1466,7 @@ var tram = __webpack_require__(1) && $.tram;
 module.exports = function () {
   var _ = {}; // Current version.
 
-  _.VERSION = '1.6.0-WhatAmIDoing'; // Establish the object that gets returned to break out of a loop iteration.
+  _.VERSION = '1.6.0-wtfftw'; // Establish the object that gets returned to break out of a loop iteration.
 
   var breaker = {}; // Save bytes in the minified (but not gzipped) version:
 
@@ -1836,16 +1836,16 @@ module.exports = _typeof;
 /* eslint-disable no-var */
 
 /**
- * WhatAmIDoing: Auto-select links to current page or section
+ * wtfftw: Auto-select links to current page or section
  */
 
-var WhatAmIDoing = __webpack_require__(0);
+var wtfftw = __webpack_require__(0);
 
-WhatAmIDoing.define('links', module.exports = function ($, _) {
+wtfftw.define('links', module.exports = function ($, _) {
   var api = {};
   var $win = $(window);
   var designer;
-  var inApp = WhatAmIDoing.env();
+  var inApp = wtfftw.env();
   var location = window.location;
   var tempLink = document.createElement('a');
   var linkCurrent = 'w--current';
@@ -1859,10 +1859,10 @@ WhatAmIDoing.define('links', module.exports = function ($, _) {
   // Private methods
 
   function init() {
-    designer = inApp && WhatAmIDoing.env('design');
-    slug = WhatAmIDoing.env('slug') || location.pathname || ''; // Reset scroll listener, init anchors
+    designer = inApp && wtfftw.env('design');
+    slug = wtfftw.env('slug') || location.pathname || ''; // Reset scroll listener, init anchors
 
-    WhatAmIDoing.scroll.off(scroll);
+    wtfftw.scroll.off(scroll);
     anchors = []; // Test all links for a selectable href
 
     var links = document.links;
@@ -1873,7 +1873,7 @@ WhatAmIDoing.define('links', module.exports = function ($, _) {
 
 
     if (anchors.length) {
-      WhatAmIDoing.scroll.on(scroll);
+      wtfftw.scroll.on(scroll);
       scroll();
     }
   }
@@ -1891,7 +1891,7 @@ WhatAmIDoing.define('links', module.exports = function ($, _) {
     if (tempLink.hash.length > 1 && tempLink.host + tempLink.pathname === location.host + location.pathname) {
       // Ignore any hrefs with Google Translate type hash
       // Example: jQuery can't parse $('#googtrans(en|es)')
-      // https://forum.whatamidoing.com/t/dropdown-menus-not-working-on-site/87140
+      // https://forum.wtfftw.com/t/dropdown-menus-not-working-on-site/87140
       if (!/^#[a-zA-Z0-9\-\_]+$/.test(tempLink.hash)) {
         return;
       }
@@ -1966,12 +1966,12 @@ WhatAmIDoing.define('links', module.exports = function ($, _) {
 /* eslint-disable no-var */
 
 /**
- * WhatAmIDoing: Smooth scroll
+ * wtfftw: Smooth scroll
  */
 
-var WhatAmIDoing = __webpack_require__(0);
+var wtfftw = __webpack_require__(0);
 
-WhatAmIDoing.define('scroll', module.exports = function ($) {
+wtfftw.define('scroll', module.exports = function ($) {
   var $doc = $(document);
   var win = window;
   var loc = win.location;
@@ -1991,7 +1991,7 @@ WhatAmIDoing.define('scroll', module.exports = function ($) {
     var locHref = loc.href.split('#')[0]; // When clicking on a link, check if it links to another part of the page
 
     $doc.on('click', 'a', function (e) {
-      if (WhatAmIDoing.env('design')) {
+      if (wtfftw.env('design')) {
         return;
       } // Ignore links being used by jQuery mobile
 
@@ -2035,7 +2035,7 @@ WhatAmIDoing.define('scroll', module.exports = function ($) {
 
 
     if (loc.hash !== hash && history && history.pushState && // Navigation breaks Chrome when the protocol is `file:`.
-    !(WhatAmIDoing.env.chrome && loc.protocol === 'file:')) {
+    !(wtfftw.env.chrome && loc.protocol === 'file:')) {
       var oldHash = history.state && history.state.hash;
 
       if (oldHash !== hash) {
@@ -2046,7 +2046,7 @@ WhatAmIDoing.define('scroll', module.exports = function ($) {
     } // If a fixed header exists, offset for the height
 
 
-    var rootTag = WhatAmIDoing.env('editor') ? '.w-editor-body' : 'body';
+    var rootTag = wtfftw.env('editor') ? '.w-editor-body' : 'body';
     var header = $('header, ' + rootTag + ' > .header, ' + rootTag + ' > .w-nav:not([data-no-scroll])');
     var offset = header.css('position') === 'fixed' ? header.outerHeight() : 0;
     win.setTimeout(function () {
@@ -2133,12 +2133,12 @@ WhatAmIDoing.define('scroll', module.exports = function ($) {
 /* eslint-disable no-var */
 
 /**
- * WhatAmIDoing: Touch events
+ * wtfftw: Touch events
  */
 
-var WhatAmIDoing = __webpack_require__(0);
+var wtfftw = __webpack_require__(0);
 
-WhatAmIDoing.define('touch', module.exports = function ($) {
+wtfftw.define('touch', module.exports = function ($) {
   var api = {};
   var fallback = !document.addEventListener;
   var getSelection = window.getSelection; // Fallback to click events in old IE
@@ -2293,23 +2293,23 @@ WhatAmIDoing.define('touch', module.exports = function ($) {
   window,
   document,
   FormData,
-  WHATAMIDOING_FORM_API_HOST,
-  WHATAMIDOING_FORM_OLDIE_HOST
+  wtfftw_FORM_API_HOST,
+  wtfftw_FORM_OLDIE_HOST
 */
 
 /* eslint-disable no-var */
 
 /**
- * WhatAmIDoing: Forms
+ * wtfftw: Forms
  */
 
 var _interopRequireDefault = __webpack_require__(2);
 
 var _slicedToArray2 = _interopRequireDefault(__webpack_require__(11));
 
-var WhatAmIDoing = __webpack_require__(0);
+var wtfftw = __webpack_require__(0);
 
-WhatAmIDoing.define('forms', module.exports = function ($, _) {
+wtfftw.define('forms', module.exports = function ($, _) {
   var api = {};
   var $doc = $(document);
   var $forms;
@@ -2320,7 +2320,7 @@ WhatAmIDoing.define('forms', module.exports = function ($, _) {
   var emailField = /e(-)?mail/i;
   var emailValue = /^\S+@\S+$/;
   var alert = window.alert;
-  var inApp = WhatAmIDoing.env();
+  var inApp = wtfftw.env();
   var listening;
   var formUrl;
   var signFileUrl; // MailChimp domains: list-manage.com + mirrors
@@ -2342,10 +2342,10 @@ WhatAmIDoing.define('forms', module.exports = function ($, _) {
 
   function init() {
     siteId = $('html').attr('data-wf-site');
-    formUrl = "https://whatamidoing.com" + '/api/v1/form/' + siteId; // Work around same-protocol IE XDR limitation - without this IE9 and below forms won't submit
+    formUrl = "https://wtfftw.com" + '/api/v1/form/' + siteId; // Work around same-protocol IE XDR limitation - without this IE9 and below forms won't submit
 
-    if (retro && formUrl.indexOf("https://whatamidoing.com") >= 0) {
-      formUrl = formUrl.replace("https://whatamidoing.com", "http://formdata.whatamidoing.com");
+    if (retro && formUrl.indexOf("https://wtfftw.com") >= 0) {
+      formUrl = formUrl.replace("https://wtfftw.com", "http://formdata.wtfftw.com");
     }
 
     signFileUrl = "".concat(formUrl, "/signFile");
@@ -2390,20 +2390,20 @@ WhatAmIDoing.define('forms', module.exports = function ($, _) {
 
     if (action) {
       return;
-    } // WhatAmIDoing forms for hosting accounts
+    } // wtfftw forms for hosting accounts
 
 
     if (siteId) {
-      data.handler = typeof hostedSubmitWhatAmIDoing === 'function' ? hostedSubmitWhatAmIDoing : exportedSubmitWhatAmIDoing;
+      data.handler = typeof hostedSubmitwtfftw === 'function' ? hostedSubmitwtfftw : exportedSubmitwtfftw;
       return;
-    } // Alert for disconnected WhatAmIDoing forms
+    } // Alert for disconnected wtfftw forms
 
 
     disconnected();
   }
 
   function addListeners() {
-    listening = true; // Handle form submission for WhatAmIDoing forms
+    listening = true; // Handle form submission for wtfftw forms
 
     $doc.on('submit', namespace + ' form', function (evt) {
       var data = $.data(this, namespace);
@@ -2535,7 +2535,7 @@ WhatAmIDoing.define('forms', module.exports = function ($, _) {
     return status;
   }
 
-  function exportedSubmitWhatAmIDoing(data) {
+  function exportedSubmitwtfftw(data) {
     preventDefault(data);
     afterSubmit(data);
   } // Submit form to MailChimp
@@ -2620,7 +2620,7 @@ WhatAmIDoing.define('forms', module.exports = function ($, _) {
     var success = data.success; // Redirect to a success url if defined
 
     if (success && redirect) {
-      WhatAmIDoing.location(redirect);
+      wtfftw.location(redirect);
       return;
     } // Show or hide status divs
 
@@ -2888,14 +2888,14 @@ module.exports = _nonIterableRest;
 /* eslint-disable no-var */
 
 /**
- * WhatAmIDoing: Navbar component
+ * wtfftw: Navbar component
  */
 
-var WhatAmIDoing = __webpack_require__(0);
+var wtfftw = __webpack_require__(0);
 
 var IXEvents = __webpack_require__(16);
 
-WhatAmIDoing.define('navbar', module.exports = function ($, _) {
+wtfftw.define('navbar', module.exports = function ($, _) {
   var api = {};
   var tram = $.tram;
   var $win = $(window);
@@ -2904,7 +2904,7 @@ WhatAmIDoing.define('navbar', module.exports = function ($, _) {
   var $navbars;
   var designer;
   var inEditor;
-  var inApp = WhatAmIDoing.env();
+  var inApp = wtfftw.env();
   var overlay = '<div class="w-nav-overlay" data-wf-ignore />';
   var namespace = '.w-nav';
   var buttonOpen = 'w--open';
@@ -2928,8 +2928,8 @@ WhatAmIDoing.define('navbar', module.exports = function ($, _) {
 
 
   function init() {
-    designer = inApp && WhatAmIDoing.env('design');
-    inEditor = WhatAmIDoing.env('editor');
+    designer = inApp && wtfftw.env('design');
+    inEditor = wtfftw.env('editor');
     $body = $(document.body); // Find all instances on the page
 
     $navbars = $doc.find(namespace);
@@ -2945,11 +2945,11 @@ WhatAmIDoing.define('navbar', module.exports = function ($, _) {
   }
 
   function removeListeners() {
-    WhatAmIDoing.resize.off(resizeAll);
+    wtfftw.resize.off(resizeAll);
   }
 
   function addListeners() {
-    WhatAmIDoing.resize.on(resizeAll);
+    wtfftw.resize.on(resizeAll);
   }
 
   function resizeAll() {
@@ -3082,7 +3082,7 @@ WhatAmIDoing.define('navbar', module.exports = function ($, _) {
       var link = $(this);
       var href = link.attr('href'); // Avoid late clicks on touch devices
 
-      if (!WhatAmIDoing.validClick(evt.currentTarget)) {
+      if (!wtfftw.validClick(evt.currentTarget)) {
         evt.preventDefault();
         return;
       } // Close when navigating to an in-page anchor
@@ -3189,7 +3189,7 @@ WhatAmIDoing.define('navbar', module.exports = function ($, _) {
     var navbarEl = data.el[0];
     resize(0, navbarEl);
     ix.intro(0, navbarEl);
-    WhatAmIDoing.redraw.up(); // Listen for tap outside events
+    wtfftw.redraw.up(); // Listen for tap outside events
 
     if (!designer) {
       $doc.on('tap' + namespace, data.outside);
@@ -3328,7 +3328,7 @@ function dispatchCustomEvent(element, eventName) {
   element.dispatchEvent(event);
 }
 /**
- * WhatAmIDoing: IX Event triggers for other modules
+ * wtfftw: IX Event triggers for other modules
  */
 
 
@@ -3368,7 +3368,7 @@ module.exports = api;
 /* eslint-disable no-var */
 
 /**
- * WhatAmIDoing: IX Event triggers for other modules
+ * wtfftw: IX Event triggers for other modules
  */
 // eslint-disable-next-line strict
 
